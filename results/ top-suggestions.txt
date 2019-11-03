@@ -1,0 +1,11 @@
+"Stock_Name" "Stock_Change"
+"12" "AMZN Historical Data" 252.991125715835
+"41" "GOOG Historical Data" 143.889127443219
+"42" "GOOGL Historical Data" 94.5823556264679
+"7" "ALGN Historical Data" 84.434561044952
+"68" "NFLX Historical Data" 78.4768052838249
+"18" "BKNG Historical Data" 77.8211538461539
+"71" "NVDA Historical Data" 57.3073590949065
+"58" "LULU Historical Data" 53.6603481381642
+"50" "ISRG Historical Data" 51.4120082366762
+"70" "NTES Historical Data" 43.6166713778125

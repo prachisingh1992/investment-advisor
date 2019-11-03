@@ -1,0 +1,4 @@
+# install packages if not already installed in R
+# do this only for the first time
+install.packages(c("ggplot2", "ggfortify", "xts", "forecast", "tsDyn"))
+

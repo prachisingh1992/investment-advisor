@@ -1,0 +1,141 @@
+# load all required libraries
+library(ggplot2)
+library(ggfortify)
+library(xts)
+library(forecast)
+library("tsDyn")
+set.seed(1234)
+
+BASE_FOLDER_PATH = "/Users/rsharma19/git/project/investment-advisor/"
+FOLDER_PATH = paste(BASE_FOLDER_PATH, "data/", sep = "")
+RESULTS_FOLDER_PATH = paste(BASE_FOLDER_PATH, "results/", sep = "")
+FILENAMES = readLines(paste(BASE_FOLDER_PATH, "filenames.txt", sep=""))
+stock_change_forecasts = as.array(length(FILENAMES))
+
+saveplot <- function(file_path, plot) {
+  png(filename=file_path, width=6, height=6, units="in", res=1200, pointsize=4)
+  print(plot)
+  dev.off()
+}
+
+readCsvAndPredictBestModel <- function (FILE_NAME, idx) {
+  #read stock data
+  file_path = paste(FOLDER_PATH, FILE_NAME, ".csv", sep = "")
+  stock_data_full = read.csv(file=file_path, header=TRUE, sep=",")
+  stock_data_full$DateStr <- stock_data_full$Date
+  stock_data_full$Date <- as.Date(stock_data_full$DateStr, format= "%b %d, %Y")
+  stock_data = data.frame(Date=stock_data_full$Date, ClosingPrice=stock_data_full$Price)
+
+  # plot of stocks data
+  stock_plot = ggplot(data=stock_data, aes(x=Date, y=ClosingPrice)) + geom_bar(stat = "identity", fill = "purple")
+
+  # create training and test datasets
+  y <- xts(stock_data$ClosingPrice, stock_data$Date)
+  y_data = window(y, start = as.Date('2016-01-01'), end = as.Date('2019-06-30'))
+  y_ts = as.ts(y_data)
+  y_train_2016_2018 = window(y, start = as.Date('2016-01-01'), end = as.Date('2018-12-31'))
+  y_test_2019 = as.ts(window(y, start = as.Date('2019-01-01'), end = as.Date('2019-06-30')))
+  FORECAST_AHEAD_COUNT = length(y_test_2019)
+
+  # create forecasts
+  forecast_random_walk = rwf(y_train_2016_2018, drift = FALSE, h = FORECAST_AHEAD_COUNT)
+  forecast_random_walk_drift = rwf(y_train_2016_2018, drift = TRUE, h = FORECAST_AHEAD_COUNT)
+  forecast_arima = forecast(auto.arima(y_train_2016_2018), h = FORECAST_AHEAD_COUNT)
+  forecast_ets = forecast(ets(y_train_2016_2018), h = FORECAST_AHEAD_COUNT)
+  forecast_nn = forecast(nnetar(y_train_2016_2018), h = FORECAST_AHEAD_COUNT)
+  forecast_nn2 = predict(nnetTs(y_train_2016_2018, m=2, size=3, steps = 2),n.ahead=FORECAST_AHEAD_COUNT)
+
+  # graph of all forecasts together
+  forecast_plot = autoplot(y_ts) +
+   autolayer(forecast_random_walk$mean) +
+   autolayer(forecast_random_walk_drift$mean) +
+   autolayer(forecast_arima$mean) +
+   autolayer(forecast_ets$mean) +
+   autolayer(forecast_nn$mean) +
+   autolayer(forecast_nn2)
+
+  # save original data and results to a file
+  file_path = paste(RESULTS_FOLDER_PATH, "stockdata-", FILE_NAME, ".png", sep = "")
+  saveplot(file_path, stock_plot)
+
+  file_path = paste(RESULTS_FOLDER_PATH, "forecasts-", FILE_NAME, ".png", sep = "")
+  saveplot(file_path, forecast_plot)
+
+  #calcualte Squared Error in Mean, and select the best model
+  mse_random_walk = 0
+  mse_random_walk_drift = 0
+  mse_arima = 0
+  mse_ets = 0
+  mse_nn = 0
+  mse_nn2 = 0
+
+  for (i in 1:FORECAST_AHEAD_COUNT){
+   mse_random_walk = mse_random_walk + (forecast_random_walk $mean[i] - y_test_2019[i])^2
+   mse_random_walk_drift = mse_random_walk_drift + (forecast_random_walk_drift $mean[i] - y_test_2019[i])^2
+   mse_arima = mse_arima + (forecast_arima $mean[i] - y_test_2019[i])^2
+   mse_ets = mse_ets + (forecast_ets $mean[i] - y_test_2019[i])^2
+   mse_nn = mse_nn + (forecast_nn$mean[i] - y_test_2019[i])^2
+   mse_nn2 = mse_nn2 + (forecast_nn2[i] - y_test_2019[i])^2
+  }
+
+  min_mse = min(mse_random_walk, mse_random_walk_drift, mse_nn, mse_ets, mse_arima, mse_nn2)
+
+  if (min_mse == mse_ets){
+   best_model_name = "Exponential Smoothing (ETS)"
+   stock_change_forecast = forecast_ets$mean[FORECAST_AHEAD_COUNT] - forecast_ets$mean[1]
+   print("Exponential Smoothing (ETS)")
+   result_plot = autoplot(forecast_ets)
+  } else if (min_mse == mse_arima){
+   best_model_name = "ARIMA"
+   stock_change_forecast = forecast_arima$mean[FORECAST_AHEAD_COUNT] - forecast_arima$mean[1]
+   print("ARIMA")
+   result_plot = autoplot(forecast_arima)
+  } else if (min_mse == mse_nn){
+   best_model_name = "Single Layer Neural Network"
+   stock_change_forecast = forecast_nn$mean[FORECAST_AHEAD_COUNT] - forecast_nn$mean[1]
+   print("Single Layer Neural Network")
+   result_plot = autoplot(forecast_nn)
+  } else if (min_mse == mse_random_walk_drift){
+   best_model_name = "Random Walk With Drift"
+   stock_change_forecast = forecast_random_walk_drift$mean[FORECAST_AHEAD_COUNT] - forecast_random_walk_drift$mean[1]
+   print("Random Walk With Drift")
+   result_plot = autoplot(forecast_random_walk_drift)
+  } else if (min_mse == mse_nn2){
+   best_model_name = "Neural Network with step=2"
+   stock_change_forecast = forecast_nn2[FORECAST_AHEAD_COUNT] - forecast_nn2[1]
+   print("Neural Network with step=2")
+   result_plot = autoplot(forecast_nn2)
+  } else if (min_mse == mse_random_walk){
+   best_model_name = "Random Walk"
+   stock_change_forecast = forecast_random_walk$mean[FORECAST_AHEAD_COUNT] - forecast_random_walk$mean[1]
+   print("Random Walk")
+   result_plot = autoplot(forecast_random_walk)
+  }
+
+  stock_change_forecasts[idx] <<- stock_change_forecast
+
+  file_path = paste(RESULTS_FOLDER_PATH, "results-", FILE_NAME, ".png", sep = "")
+  saveplot(file_path, result_plot)
+
+  return(best_model_name)
+}
+
+# obtain the best model
+best_models = as.array(length(FILENAMES))
+
+for (t in 1:length(FILENAMES)){
+  FILE_NAME = FILENAMES[t]
+  best_models[t] = readCsvAndPredictBestModel(FILE_NAME, t)
+}
+
+# write best model results
+write("", append=FALSE, file=paste(RESULTS_FOLDER_PATH, "results.txt", sep = ""))
+for (t in 1:length(FILENAMES)){
+  write(paste(FILENAMES[t], best_models[t], sep=" :: "), append=TRUE, file=paste(RESULTS_FOLDER_PATH, "results.txt", sep = ""))
+}
+
+# suggest the top 10 best performing stocks
+stock_changes = data.frame(Stock_Name=FILENAMES, Stock_Change=stock_change_forecasts)
+top_stocks = stock_changes[order(-stock_changes$Stock_Change),]
+head(top_stocks, 10)
+write.table(head(top_stocks, 10), append=FALSE, file=paste(RESULTS_FOLDER_PATH, "top-suggestions.txt"))

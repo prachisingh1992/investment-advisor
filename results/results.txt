@@ -1,0 +1,102 @@
+
+AAL Historical Data :: ARIMA
+AAPL Historical Data :: Single Layer Neural Network
+ADBE Historical Data :: Single Layer Neural Network
+ADI Historical Data :: Single Layer Neural Network
+ADP Historical Data :: Single Layer Neural Network
+ADSK Historical Data :: Random Walk With Drift
+ALGN Historical Data :: Single Layer Neural Network
+ALXN Historical Data :: Neural Network with step=2
+AMAT Historical Data :: Single Layer Neural Network
+AMD Historical Data :: Exponential Smoothing (ETS)
+AMGN Historical Data :: Single Layer Neural Network
+AMZN Historical Data :: Single Layer Neural Network
+ASML Historical Data :: Single Layer Neural Network
+ATVI Historical Data :: Random Walk
+AVGO Historical Data :: Random Walk With Drift
+BIDU Historical Data :: Random Walk With Drift
+BIIB Historical Data :: Neural Network with step=2
+BKNG Historical Data :: Random Walk With Drift
+BMRN Historical Data :: Neural Network with step=2
+CDNS Historical Data :: Random Walk With Drift
+CELG Historical Data :: Neural Network with step=2
+CERN Historical Data :: Neural Network with step=2
+CHKP Historical Data :: Single Layer Neural Network
+CHTR Historical Data :: Single Layer Neural Network
+CMCSA Historical Data :: Neural Network with step=2
+COST Historical Data :: Single Layer Neural Network
+CSCO Historical Data :: Random Walk With Drift
+CSX Historical Data :: Single Layer Neural Network
+CTAS Historical Data :: Single Layer Neural Network
+CTRP Historical Data :: Neural Network with step=2
+CTSH Historical Data :: Neural Network with step=2
+CTXS Historical Data :: Exponential Smoothing (ETS)
+DLTR Historical Data :: Random Walk With Drift
+EA Historical Data :: Neural Network with step=2
+EBAY Historical Data :: Neural Network with step=2
+EXPE Historical Data :: Neural Network with step=2
+FAST Historical Data :: Neural Network with step=2
+FB Historical Data :: Neural Network with step=2
+FISV Historical Data :: Single Layer Neural Network
+GILD Historical Data :: Single Layer Neural Network
+GOOG Historical Data :: Single Layer Neural Network
+GOOGL Historical Data :: Single Layer Neural Network
+HAS Historical Data :: Neural Network with step=2
+HSIC Historical Data :: Exponential Smoothing (ETS)
+IDXX Historical Data :: Single Layer Neural Network
+ILMN Historical Data :: ARIMA
+INCY Historical Data :: Neural Network with step=2
+INTC Historical Data :: Neural Network with step=2
+INTU Historical Data :: Single Layer Neural Network
+ISRG Historical Data :: Single Layer Neural Network
+JBHT Historical Data :: Random Walk With Drift
+JD Historical Data :: Single Layer Neural Network
+KHC Historical Data :: Random Walk With Drift
+KLAC Historical Data :: Single Layer Neural Network
+LBTYA Historical Data :: Single Layer Neural Network
+LBTYK Historical Data :: Single Layer Neural Network
+LRCX Historical Data :: Single Layer Neural Network
+LULU Historical Data :: Single Layer Neural Network
+MAR Historical Data :: Single Layer Neural Network
+MCHP Historical Data :: Single Layer Neural Network
+MDLZ Historical Data :: Single Layer Neural Network
+MELI Historical Data :: Single Layer Neural Network
+MNST Historical Data :: Exponential Smoothing (ETS)
+MSFT Historical Data :: Single Layer Neural Network
+MU Historical Data :: Single Layer Neural Network
+MXIM Historical Data :: Single Layer Neural Network
+MYL Historical Data :: Random Walk With Drift
+NFLX Historical Data :: Single Layer Neural Network
+NTAP Historical Data :: Random Walk With Drift
+NTES Historical Data :: Single Layer Neural Network
+NVDA Historical Data :: Neural Network with step=2
+NXPI Historical Data :: Neural Network with step=2
+ORLY Historical Data :: Random Walk With Drift
+PAYX Historical Data :: Random Walk With Drift
+PCAR Historical Data :: Neural Network with step=2
+PEP Historical Data :: Single Layer Neural Network
+PYPL Historical Data :: Exponential Smoothing (ETS)
+QCOM Historical Data :: Single Layer Neural Network
+REGN Historical Data :: Random Walk With Drift
+ROST Historical Data :: Single Layer Neural Network
+SBUX Historical Data :: Random Walk With Drift
+SIRI Historical Data :: Exponential Smoothing (ETS)
+SNPS Historical Data :: Single Layer Neural Network
+SWKS Historical Data :: Neural Network with step=2
+SYMC Historical Data :: Neural Network with step=2
+TMUS Historical Data :: Random Walk With Drift
+TSLA Historical Data :: ARIMA
+TTWO Historical Data :: Random Walk
+TXN Historical Data :: Single Layer Neural Network
+UAL Historical Data :: ARIMA
+ULTA Historical Data :: Single Layer Neural Network
+VRSK Historical Data :: Single Layer Neural Network
+VRSN Historical Data :: Random Walk With Drift
+VRTX Historical Data :: ARIMA
+WBA Historical Data :: Random Walk With Drift
+WDAY Historical Data :: Random Walk With Drift
+WDC Historical Data :: Single Layer Neural Network
+WLTW Historical Data :: ARIMA
+WYNN Historical Data :: Neural Network with step=2
+XEL Historical Data :: Random Walk With Drift
+XLNX Historical Data :: Random Walk With Drift
